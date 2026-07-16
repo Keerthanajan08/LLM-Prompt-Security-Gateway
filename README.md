@@ -52,6 +52,32 @@ verdict cache lookup (has a near-identical prompt already been checked?)
 
 LangChain composes steps 2 onward as a runnable chain (`app/langchain_pipeline.py`) — a deliberately linear pipeline, not an agent, because the problem doesn't need branching logic, just composition.
 
+...
+
+## Screenshots
+
+<img width="992" height="343" alt="image" src="https://github.com/user-attachments/assets/9afd0832-0ad5-4e00-b4b7-cf674b9263ce" />
+
+
+### Pattern-based leak detected
+![Pattern leak blocked](docs/screenshots/pattern-leak-blocked.png)
+
+### Paraphrased leak caught by semantic detection
+![Semantic leak detected](docs/screenshots/semantic-leak-detected.png)
+
+### Clean prompt passes through
+![Clean prompt safe](docs/screenshots/clean-prompt-safe.png)
+
+### Live demo run
+Output from `scripts/run_demo.py`.
+
+![Demo run output](docs/screenshots/demo-run-output.png)
+
+## Design decisions worth knowing (and being asked about)
+
+- **Two separate detectors, not one.** Pattern matching is cheap and 
+  exact but blind to paraphrase...
+
 ## Design decisions worth knowing (and being asked about)
 
 - **Two separate detectors, not one.** Pattern matching is cheap and
