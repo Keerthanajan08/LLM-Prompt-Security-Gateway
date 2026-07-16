@@ -115,7 +115,7 @@ curl -X POST http://127.0.0.1:8000/check \
   -d '{"prompt": "Our revenue dropped 12% this quarter because we lost some big enterprise customers"}'
 ```
 
-## Using a real LLM (still free)
+## Using a real LLM
 
 Same as before — pick one, both have usable free tiers:
 - **Groq** — https://console.groq.com
@@ -126,7 +126,7 @@ LLM_PROVIDER=groq
 GROQ_API_KEY=your_key_here
 ```
 
-## Deploying (still free)
+## Deploying
 
 | Piece | Where |
 |---|---|
