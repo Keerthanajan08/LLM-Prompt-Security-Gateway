@@ -58,27 +58,22 @@ LangChain composes steps 2 onward as a runnable chain (`app/langchain_pipeline.p
 
 <img width="992" height="343" alt="image" src="https://github.com/user-attachments/assets/9afd0832-0ad5-4e00-b4b7-cf674b9263ce" />
 
-
 ### Pattern-based leak detected
-![Pattern leak blocked](docs/screenshots/pattern-leak-blocked.png)
+<img width="917" height="507" alt="image" src="https://github.com/user-attachments/assets/26732a10-113b-4154-ae28-8132b718ac81" />
 
 ### Paraphrased leak caught by semantic detection
-![Semantic leak detected](docs/screenshots/semantic-leak-detected.png)
+<img width="928" height="502" alt="image" src="https://github.com/user-attachments/assets/33337724-3c9f-4a7a-9806-78170047d88d" />
 
 ### Clean prompt passes through
-![Clean prompt safe](docs/screenshots/clean-prompt-safe.png)
+<img width="929" height="490" alt="image" src="https://github.com/user-attachments/assets/8ac67e68-ce37-401e-bc8e-12aa7f15a11f" />
 
-### Live demo run
-Output from `scripts/run_demo.py`.
 
-![Demo run output](docs/screenshots/demo-run-output.png)
-
-## Design decisions worth knowing (and being asked about)
+## Design decisions worth knowing 
 
 - **Two separate detectors, not one.** Pattern matching is cheap and 
   exact but blind to paraphrase...
 
-## Design decisions worth knowing (and being asked about)
+## Design decisions worth knowing 
 
 - **Two separate detectors, not one.** Pattern matching is cheap and
   exact but blind to paraphrase. Semantic matching catches paraphrase but
