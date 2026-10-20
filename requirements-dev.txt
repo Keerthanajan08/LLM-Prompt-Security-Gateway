@@ -1,0 +1,8 @@
+# Tests, lint and eval tooling. The unit tests use a hashing embedder, so
+# they don't need the ML stack; add -r requirements.txt for model tests/evals.
+-r requirements-base.txt
+pytest>=8.3,<10
+pytest-cov>=5,<8
+fakeredis>=2.24,<3
+openai>=1.40,<4
+ruff>=0.6,<1
