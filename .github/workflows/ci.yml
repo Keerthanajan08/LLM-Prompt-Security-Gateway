@@ -33,6 +33,24 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: pytest --cov=app --cov-report=term-missing --cov-fail-under=90
 
+  dashboard:
+    name: Dashboard (typecheck, tests, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
   # Runs the real embedding model: integration tests plus the labeled eval as
   # a regression gate, so a rule or threshold change that hurts detection
   # quality fails the build.
