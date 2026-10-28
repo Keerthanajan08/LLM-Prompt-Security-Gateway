@@ -7,6 +7,7 @@ POST /check                 -> screen a prompt, return the verdict (no LLM call)
 POST /query                 -> screen, forward to the LLM if allowed, screen the answer
 POST /v1/chat/completions   -> OpenAI-compatible drop-in proxy (see app/openai_compat.py)
 GET  /stats                 -> running counters
+GET  /ui/                   -> React dashboard, when built (frontend/; `/` redirects there)
 
 Detection pipeline (app/langchain_pipeline.py):
   1. Pattern detection: regex + checksum rules in configurable packs
@@ -20,10 +21,12 @@ Run it:
 """
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.detectors.injection_detector import get_exemplars
@@ -37,6 +40,10 @@ from app.schemas import CheckRequest, CheckResponse, QueryRequest, QueryResponse
 from app.stats import stats
 
 __version__ = "0.2.0"
+
+# The React dashboard, built by `npm run build` in frontend/. Optional: without a
+# build the API works as before and / goes to the API docs.
+UI_DIR = Path(__file__).parent / "ui"
 
 
 @asynccontextmanager
@@ -83,6 +90,11 @@ async def _upstream_error(_: Request, exc: LLMProviderError):
 @app.exception_handler(LLMConfigError)
 async def _config_error(_: Request, exc: LLMConfigError):
     return JSONResponse(status_code=500, content={"detail": str(exc)})
+
+
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/ui/" if (UI_DIR / "index.html").is_file() else "/docs")
 
 
 @app.get("/health")
@@ -140,3 +152,14 @@ def query(request: QueryRequest):
 @app.get("/stats", response_model=StatsResponse)
 def get_stats():
     return stats.snapshot()
+
+
+def mount_ui(target: FastAPI, ui_dir: Path) -> bool:
+    """Serve the built dashboard at /ui if a build exists. Returns whether it was mounted."""
+    if not (ui_dir / "index.html").is_file():
+        return False
+    target.mount("/ui", StaticFiles(directory=ui_dir, html=True), name="ui")
+    return True
+
+
+mount_ui(app, UI_DIR)

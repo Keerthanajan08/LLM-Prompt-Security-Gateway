@@ -8,3 +8,7 @@ venv/
 .coverage
 coverage.xml
 htmlcov/
+
+# Dashboard
+frontend/node_modules/
+app/ui/
